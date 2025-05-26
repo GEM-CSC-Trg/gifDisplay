@@ -1,11 +1,11 @@
-# apply_cmssw_customization_steps() {
-#     run_cmd git cms-init
-#     run_cmd git cms-addpkg Validation/MuonCSCDigis
-#     run_cmd mkdir -p GEMCode
-#     run_cmd ln -s "$this_dir/GEMValidation" GEMCode/GEMValidation
-# }
+apply_cmssw_customization_steps() {
+    # run_cmd git cms-init
+    # run_cmd git cms-addpkg Validation/MuonCSCDigis
+    run_cmd mkdir -p GifDisplay
+    run_cmd ln -s "$ANALYSIS_PATH/GifDisplay" GifDisplay
+}
 
-CMSSW_VERSION="CMSSW_14_2_0_pre1"
+CMSSW_VERSION="CMSSW_13_0_3"
 
 action() {
     local this_file="$( [ ! -z "$ZSH_VERSION" ] && echo "${(%):-%x}" || echo "${BASH_SOURCE[0]}" )"
@@ -17,5 +17,5 @@ action() {
     source $ANALYSIS_PATH/GEM-CSC-trg-dev/env.sh "$this_file_path" "$CMSSW_VERSION" "$@"
 }
 action "$@"
-unset -f action
-# unset -f apply_cmssw_customization_steps
+# unset -f action
+# # unset -f apply_cmssw_customization_steps
