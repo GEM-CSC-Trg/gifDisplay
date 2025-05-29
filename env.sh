@@ -2,7 +2,7 @@ apply_cmssw_customization_steps() {
     # run_cmd git cms-init
     # run_cmd git cms-addpkg Validation/MuonCSCDigis
     run_cmd mkdir -p gifDisplay
-    run_cmd ln -s "$ANALYSIS_PATH/GifDisplay" gifDisplay/
+    run_cmd ln -s "$ANALYSIS_PATH/GifDisplay" gifDisplay/GifDisplay
 }
 
 CMSSW_VERSION="CMSSW_13_0_3"

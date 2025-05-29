@@ -82,6 +82,13 @@ process.load("DQM.L1TMonitor.L1TdeCSCTPG_cfi")
 process.load("DQM.L1TMonitor.L1TdeGEMTPG_cfi")
 
 
+process.maxEvents = cms.untracked.PSet(
+      input = cms.untracked.int32(options.maxEvents)
+)
+
+process.options = cms.untracked.PSet(
+      SkipEvent = cms.untracked.vstring('ProductNotFound')
+)
 
 process.maxEvents = cms.untracked.PSet(
      input = cms.untracked.int32(-1)
@@ -104,17 +111,30 @@ if options.unpackGEM:
       process.source.labelRawDataLikeMC = cms.untracked.bool(False)
 
 ## global tag (data or MC, Run-2 or Run-3)
+
 from Configuration.AlCa.GlobalTag import GlobalTag
 if options.mc:
       process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc', '')
       if options.run3:
-            #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:phase1_2021_realistic', '')
-            process.GlobalTag = GlobalTag(process.GlobalTag, '123X_mcRun3_2021_realistic_v14', '')
+            process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:phase1_2022_realistic', '')
 else:
       process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_data', '')
       if options.run3:
             #process.GlobalTag = GlobalTag(process.GlobalTag, '112X_dataRun3_Prompt_v5', '')
-            process.GlobalTag = GlobalTag(process.GlobalTag, '140X_dataRun3_Prompt_v2', '')
+            process.GlobalTag = GlobalTag(process.GlobalTag, '140X_dataRun3_HLT_v3', '')
+
+
+# from Configuration.AlCa.GlobalTag import GlobalTag
+# if options.mc:
+#       process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc', '')
+#       if options.run3:
+#             #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:phase1_2021_realistic', '')
+#             process.GlobalTag = GlobalTag(process.GlobalTag, '123X_mcRun3_2021_realistic_v14', '')
+# else:
+#       process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_data', '')
+#       if options.run3:
+#             #process.GlobalTag = GlobalTag(process.GlobalTag, '112X_dataRun3_Prompt_v5', '')
+#             process.GlobalTag = GlobalTag(process.GlobalTag, '140X_dataRun3_Prompt_v2', '')
 #process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v0'
 #process.GlobalTag.globaltag = '92X_dataRun2_Prompt_v11'
 #process.GlobalTag.globaltag = '102X_dataRun2_Prompt_v1'
@@ -157,7 +177,7 @@ if options.l1:
 if options.l1GEM:
       process.simMuonGEMPadDigis.InputCollection = 'muonGEMDigis'
 
-#####Run2 emulator 
+#####Run2 emulator
 process.simCscTriggerPrimitiveDigisRun2 = process.cscTriggerPrimitiveDigis.clone()
 process.simCscTriggerPrimitiveDigisRun2.commonParam.runME11Up = cms.bool(False)
 process.simCscTriggerPrimitiveDigisRun2.commonParam.runME21Up = cms.bool(False)
@@ -269,7 +289,7 @@ def useInputDir(process, inputDir, onEOS = True):
         if onEOS:
             theInputFiles.extend(['file:' + my_dir[:] + x for x in ls if x.endswith('root') and x.startswith('lcts')])
         else:
-            ## this works only if you pass the location on pnfs - FIXME for files staring with store/user/...                                                            
+            ## this works only if you pass the location on pnfs - FIXME for files staring with store/user/...
             theInputFiles.extend([my_dir[16:] + x for x in ls if x.endswith('root')])
 
     process.source.fileNames = cms.untracked.vstring(*theInputFiles)
@@ -412,7 +432,7 @@ process.l1sequence = cms.Sequence(l1csc)
 #      ## maybe the modules need to come first
 #      process.l1sequence += process.simMuonGEMPadDigis
 #      process.l1sequence += process.simMuonGEMPadDigiClusters
-#redefine the l1 sequence 
+#redefine the l1 sequence
 #process.l1sequence = cms.Sequence(
 #        process.simMuonGEMPadDigis *
 #        process.simMuonGEMPadDigiClusters *
